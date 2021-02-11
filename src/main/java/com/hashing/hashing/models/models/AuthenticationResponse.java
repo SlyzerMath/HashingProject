@@ -1,6 +1,7 @@
 package com.hashing.hashing.models.models;
 
 public class AuthenticationResponse {
+
     private final String jwt;
 
     public AuthenticationResponse(String jwt) {
