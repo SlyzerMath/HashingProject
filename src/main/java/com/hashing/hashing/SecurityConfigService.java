@@ -1,33 +1,27 @@
 package com.hashing.hashing;
 
-import com.hashing.hashing.filters.jwtRequestFilter;
-import com.hashing.hashing.services.MyUserDeatilsService;
+import com.hashing.hashing.filters.RequestFilterService;
+import com.hashing.hashing.services.MyUserDeatilsFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.webservices.WebServicesAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.AliasFor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfigService extends WebSecurityConfigurerAdapter {
     @Autowired
-    private MyUserDeatilsService myUserDetailsService;
+    private MyUserDeatilsFacade myUserDetailsService;
     @Autowired
-    private jwtRequestFilter jwtRequestFilter;
+    private RequestFilterService RequestFilterService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -40,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/authenticate").permitAll()
                 .anyRequest().authenticated().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(RequestFilterService, UsernamePasswordAuthenticationFilter.class);
     }
     @Override
     @Bean

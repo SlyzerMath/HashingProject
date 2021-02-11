@@ -1,7 +1,7 @@
 package com.hashing.hashing.filters;
 
-import com.hashing.hashing.services.MyUserDeatilsService;
-import com.hashing.hashing.services.util.jwtUtil;
+import com.hashing.hashing.services.MyUserDeatilsFacade;
+import com.hashing.hashing.services.util.jwtUtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,12 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class jwtRequestFilter extends OncePerRequestFilter {
+public class RequestFilterService extends OncePerRequestFilter {
 
     @Autowired
-    private MyUserDeatilsService userDeatilsService;
+    private MyUserDeatilsFacade userDeatilsService;
     @Autowired
-    private jwtUtil jwtUtil;
+    private jwtUtilRepo jwtUtilRepo;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -33,13 +33,13 @@ public class jwtRequestFilter extends OncePerRequestFilter {
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
-            username = jwtUtil.extractUsername(jwt);
+            username = jwtUtilRepo.extractUsername(jwt);
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = this.userDeatilsService.loadUserByUsername(username);
 
-            if (jwtUtil.validateToken(jwt, userDetails)) {
+            if (jwtUtilRepo.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken

@@ -1,9 +1,9 @@
 package com.hashing.hashing;
 
 import com.hashing.hashing.models.AuthenticationRequest;
-import com.hashing.hashing.models.models.AuthenticationResponse;
-import com.hashing.hashing.services.MyUserDeatilsService;
-import com.hashing.hashing.services.util.jwtUtil;
+import com.hashing.hashing.models.AuthenticationResponse;
+import com.hashing.hashing.services.MyUserDeatilsFacade;
+import com.hashing.hashing.services.util.jwtUtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
-public class HashingControlJwt {
+public class HashingJwtControllor {
 
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private MyUserDeatilsService userDetailsService;
+    private MyUserDeatilsFacade userDetailsService;
     @Autowired
-    private jwtUtil jwtTokenUtil;
+    private jwtUtilRepo jwtTokenUtil;
 
     @RequestMapping("/hashing")
     public String hello() {

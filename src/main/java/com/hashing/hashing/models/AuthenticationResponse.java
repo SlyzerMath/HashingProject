@@ -1,4 +1,4 @@
-package com.hashing.hashing.models.models;
+package com.hashing.hashing.models;
 
 public class AuthenticationResponse {
 
